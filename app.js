@@ -43,8 +43,14 @@ app.post('/api/customers',(req,res)=>{
 })
 
 app.put('/api/customers/:id',(req,res)=>{
+    //Look up the customers
+    //If not existing, return 404 not found
     const customer = customers.find(c=>c.id === parseInt(req.params.id));
     if(!customer) return res.status(404).send('The customer with the ID given was not found!');
+    //Validate
+    //If invalid, return 400 Bad Request
+
+    // const result = validateCourse(req.body);
     const {error} = validateCustomer(req.body)
     if(error) return res.status(400).send(error.details[0].message);
     customer.name = req.body.name;
@@ -52,8 +58,11 @@ app.put('/api/customers/:id',(req,res)=>{
 })
 
 app.delete('/api/customers/:id',(req,res)=>{
+    //Look up the course
+    // If not existing return 404 not found
     const customer = customers.find(c=>c.id === parseInt(req.params.id));
     if(!customer) return res.status(404).send('The customer with the ID given was not found!');
+    //Delete
     const index = customers.indexOf(customer);
     customers.splice(index,1);
     res.send(customer);
